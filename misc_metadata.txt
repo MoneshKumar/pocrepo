@@ -1,0 +1,27 @@
+python.txt	\python.txt
+rsa_key.txt	\rsa_key.txt
+Untitled.png	\Untitled.png
+qerewr.txt	\qwew\qerewr.txt
+ADS server.png	\qwew\tarfile_gz\ADS server.png
+DasCode_Issue.png	\qwew\tarfile_gz\DasCode_Issue.png
+python.txt	\qwew\tarfile_gz\python.txt
+requirements.txt	\qwew\tarfile_gz\requirements.txt
+Untitled.png	\qwew\tarfile_gz\Untitled.png
+ADS server.png	\tarfile_zip\ADS server.png
+DasCode_Issue.png	\tarfile_zip\DasCode_Issue.png
+python.txt	\tarfile_zip\python.txt
+requirements.txt	\tarfile_zip\requirements.txt
+Untitled.png	\tarfile_zip\Untitled.png
+sample.txt	\test\sample.txt
+ADS server.png	\test\tarfile_tgz\ADS server.png
+DasCode_Issue.png	\test\tarfile_tgz\DasCode_Issue.png
+python.txt	\test\tarfile_tgz\python.txt
+requirements.txt	\test\tarfile_tgz\requirements.txt
+Untitled.png	\test\tarfile_tgz\Untitled.png
+qscfr.xlsx	\test\test1\qscfr.xlsx
+qwert.docx	\test\test1\qwert.docx
+ADS server.png	\test\test1\tarfile_tar\ADS server.png
+DasCode_Issue.png	\test\test1\tarfile_tar\DasCode_Issue.png
+python.txt	\test\test1\tarfile_tar\python.txt
+requirements.txt	\test\test1\tarfile_tar\requirements.txt
+Untitled.png	\test\test1\tarfile_tar\Untitled.png

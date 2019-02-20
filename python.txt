@@ -1,0 +1,169 @@
+import os
+import mimetypes
+import subprocess
+
+class FileType:
+    RESERVED     = 0
+    C            = 1
+    H            = 2
+    PERL         = 3
+    JAM          = 4
+    JAMFILE      = 5
+    SWIG         = 6
+    PYTHON       = 7
+    XR_STARTUP   = 8
+    XR_PLACEMENT = 9
+    XR_CLI       = 10
+    XR_BAG       = 11
+    XR_BGEN      = 12
+    XR_DEBUG_MSG = 13
+    README       = 14
+    PROTO        = 15
+    JSON         = 16
+    MAKEFILE     = 17
+    XR_CONFIG    = 18
+    XR_INIT      = 19
+    RST          = 20
+    CONF         = 21
+    CSST         = 22
+    YANG         = 23
+    XR_META      = 24
+    ELF          = 25
+    TEXT         = 26
+    SCRIPT       = 27
+    DATA         = 28
+    ARCHIVE      = 29
+    XML          = 30
+    GARBAGE      = 31
+    EMPTY        = 32
+    BIN          = 33
+    GRAPHICS     = 34
+    VISIO        = 35
+    POWERPOINT   = 36
+    FIRMWARE     = 70
+    MUST_BE_LAST = 71
+
+    ext_map = {
+        ".c"          : C,
+        ".h"          : H,
+        ".pl"         : PERL,
+        ".jam"        : JAM,
+        ".i"          : SWIG,
+        ".py"         : PYTHON,
+        ".startup"    : XR_STARTUP,
+        ".placement"  : XR_PLACEMENT,
+        ".cmd"        : XR_CLI,
+        ".bag"        : XR_BAG,
+        ".bgen"       : XR_BGEN,
+        ".msg"        : XR_DEBUG_MSG,
+        ".proto"      : PROTO,
+        ".json"       : JSON,
+        ".cfg"        : XR_CONFIG,
+        ".init"       : XR_INIT,
+        ".rst"        : RST,
+        ".conf"       : CONF,
+        ".css_t"      : CSST,
+        ".yang"       : YANG,
+        ".meta"       : XR_META,
+        ".out"        : EXECUTABLE,
+        ".m4"         : M4,
+        ".crt"        : SECURITY_KEY,
+        ".odt"        : TEXT,
+        ".img"        : BZIMAGE,
+        ".so"         : LIBRARY,
+        ".xar"        : XAR,
+        ".rsrc"       : RSRC,
+        ".db"         : DATABASE,
+        ".txt"        : TEXT,
+        ".mcw"        : BOOTLOADER,
+        ".sun3"       : EXECUTABLE,
+        ".fmd"        : FIRMWARE,
+    }
+
+    type_map = {
+        "ELF"                 : ELF,
+        "ASCII"               : TEXT,
+        "SGML"                : TEXT,
+        "ISO-8859"            : TEXT,
+        "GNU Info"            : TEXT,
+        "PostScript document" : TEXT,
+        "script"              : SCRIPT,
+        "data"                : DATA,
+        "ar archive"          : ARCHIVE,
+        "XML"                 : XML,
+        "MS-DOS"              : GARBAGE,
+        "PPCBoot"             : GARBAGE,
+        "empty"               : EMPTY,
+        "UTF-8"               : TEXT,
+        "Graphics"            : GRAPHICS,
+        "MS Windows"          : MS_WINDOWS,
+        "tcpdump"             : TCPDUMP,
+        "isolinux"            : ISO_LINUX,
+        "message catalog"     : GNU_CATALOG,
+        "PEM DSA"             : SECURITY_KEY,
+        "terminfo"            : TERMINFO,
+        "private key"         : SECURITY_KEY,
+        "sparc executable"    : SPARC,
+        "bzImage"             : BZIMAGE,
+        "Macintosh"           : MACINTOSH,
+    }
+
+    filename_map = {
+        "Jamfile"     : JAMFILE,
+        "README"      : README,
+        "Makefile"    : MAKEFILE,
+        "bzImage"     : BZIMAGE,
+        "vxWorks"     : VXWORKS,
+    }
+
+    def get_file_type_by_ext(filename):
+        ext = os.path.splitext(filename)[1]
+        if ext in FileType.ext_map:
+            return FileType.ext_map[ext]
+        return FileType.RESERVED
+
+    def get_file_type_by_file(path, filename):
+        res, output = subprocess.getstatusoutput("file -L {}".format(path))
+        if res != 0:
+                raise AssertionError("Error ({}) running 'file' for {}"
+                                     .format(res, path))
+        for x,y in FileType.type_map.items():
+            if x in output:
+                return y
+
+        return FileType.RESERVED
+
+    def get_file_type_by_filename(filename):
+        for x in FileType.filename_map:
+            if x in filename:
+                return FileType.filename_map[x]
+        return FileType.RESERVED
+
+    def get_file_type(path, filename):
+        file_type = FileType.get_file_type_by_ext(filename)
+        if file_type != FileType.RESERVED:
+            return file_type
+
+        file_type = FileType.get_file_type_by_filename(filename)
+        if file_type != FileType.RESERVED:
+            return file_type
+
+        return FileType.get_file_type_by_file(path, filename)
+
+
+def create_report():
+    component="root"
+    print("Filename\tComponent\tSize\tType\tFull_Path")
+    for (path, dirs, files) in os.walk("."):
+        if os.path.exists(os.path.join(path,"comp-mdata.pl")):
+            component=path
+        patharray=path.split(os.path.os.path.sep)
+        for f in files:
+            if os.path.exists(os.path.join(path, f)) and not (".git" in patharray or "x86_64" in patharray or ".CC"  in patharray or ".ACME"  in patharray or ".signature"  in patharray) :
+                size=os.path.getsize(os.path.join(path, f))
+                print("{} \t{} \t{} \t{}, {}".format(f, component, size, FileType.get_file_type(path, f), os.path.join(path, f)))
+
+
+if __name__ == "__main__":
+    create_report()
+    

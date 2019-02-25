@@ -1,0 +1,7 @@
+python.txt	\python.txt
+rsa_key.txt	\rsa_key.txt
+Untitled.png	\Untitled.png
+qerewr.txt	\qwew\qerewr.txt
+sample.txt	\test\sample.txt
+qscfr.xlsx	\test\test1\qscfr.xlsx
+qwert.docx	\test\test1\qwert.docx
